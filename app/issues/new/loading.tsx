@@ -1,8 +1,5 @@
-import SkeletonTheme from "@/app/components/SkeletonTheme";
+import { Skeleton, SkeletonTheme } from "@/app/components";
 import { Box } from "@radix-ui/themes";
-import React from "react";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
 const LoadingNewIssuePage = () => {
   return (
