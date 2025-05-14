@@ -1,5 +1,4 @@
 "use client";
-import { IssueStatusBadge } from "@/app/components";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import { issueSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,7 +47,11 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       router.push("/issues");
     } catch (error) {
       setSubmitting(false);
-      setError("An unexpected error occurred.");
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.message || "An unexpected error occurred.");
+      } else {
+        setError("An unexpected error occurred.");
+      }
     }
   });
   return (
