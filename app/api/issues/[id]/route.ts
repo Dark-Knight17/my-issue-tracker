@@ -25,7 +25,8 @@ export async function PATCH(
         where: {id: issue.id},
         data:{
             title:validation.data.title,
-            description: validation.data.description
+            description: validation.data.description,
+            status: validation.data?.status
         }
        });
 
