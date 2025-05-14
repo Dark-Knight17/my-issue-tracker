@@ -1,5 +1,6 @@
 export { default as Link} from './Link';
 export {default as ErrorMessage} from './ErrorMessage';
 export {default as SkeletonTheme} from './SkeletonTheme';
-export {default as IssueStatusBadge} from './IssueStatusBadge'
-export {default as Skeleton} from './Skeleton'
+export {default as IssueStatusBadge} from './IssueStatusBadge';
+export {default as Skeleton} from './Skeleton';
+export {default as Button} from './Button';
