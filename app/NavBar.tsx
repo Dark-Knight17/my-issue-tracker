@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaBug } from "react-icons/fa";
+import { Skeleton, SkeletonTheme } from "./components";
 
 const NavBar = () => {
   return (
@@ -26,7 +27,12 @@ const NavBar = () => {
 
 const AuthStatus = () => {
   const { data: session, status } = useSession();
-  if (status === "loading") return null;
+  if (status === "loading")
+    return (
+      <SkeletonTheme>
+        <Skeleton width="3rem" />
+      </SkeletonTheme>
+    );
   if (status === "unauthenticated")
     return <Link href="/api/auth/signin">signin</Link>;
 
