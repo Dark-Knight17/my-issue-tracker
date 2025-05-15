@@ -5,6 +5,7 @@ import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
 import DeleteIssueBUtton from "./DeleteIssueBUtton";
 import { isSymbolObject } from "util/types";
+import AssigneeSelect from "./AssigneeSelect";
 
 const IssueDetailPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params;
@@ -29,6 +30,7 @@ const IssueDetailPage = async (props: { params: Promise<{ id: string }> }) => {
       </Box>
       <Box>
         <Flex direction="column" gap="4">
+          <AssigneeSelect />
           <EditIssueButton issueId={issue.id} />
           <DeleteIssueBUtton issueId={issue.id} />
         </Flex>
