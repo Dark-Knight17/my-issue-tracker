@@ -5,6 +5,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavBar from "./NavBar";
 import "./theme-config.css";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,13 +32,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Theme appearance="dark" accentColor="violet" radius="large">
-          <NavBar />
-
-          <main className="p-5">
-            <Container>{children}</Container>
-          </main>
-        </Theme>
+        <SessionProvider>
+          <Theme appearance="dark" accentColor="violet" radius="large">
+            <NavBar />
+            <main className="p-5">
+              <Container>{children}</Container>
+            </main>
+          </Theme>
+        </SessionProvider>
       </body>
     </html>
   );

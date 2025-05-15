@@ -5,6 +5,9 @@ import React from "react";
 import { FaBug } from "react-icons/fa";
 import classNames from "classnames";
 import { Roboto_Mono } from "next/font/google";
+import { auth } from "@/auth";
+import { useSession } from "next-auth/react";
+import { Box } from "@radix-ui/themes";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -17,6 +20,9 @@ const NavBar = () => {
     { label: "dashboard", href: "/" },
     { label: "issues", href: "/issues" },
   ];
+
+  const { data: session, status } = useSession();
+
   return (
     <nav
       className={`${robotoMono.variable} font-mono flex  mb-5 h-14 items-center space-x-6 px-5 border-b`}
@@ -39,6 +45,14 @@ const NavBar = () => {
           </li>
         ))}
       </ul>
+      <Box>
+        {status === "authenticated" && (
+          <Link href="/api/auth/signout">signout</Link>
+        )}
+        {status === "unauthenticated" && (
+          <Link href="/api/auth/signin">signin</Link>
+        )}
+      </Box>
     </nav>
   );
 };
