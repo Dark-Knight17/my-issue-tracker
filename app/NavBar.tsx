@@ -7,7 +7,7 @@ import classNames from "classnames";
 import { Roboto_Mono } from "next/font/google";
 import { auth } from "@/auth";
 import { useSession } from "next-auth/react";
-import { Box } from "@radix-ui/themes";
+import { Box, Container, Flex } from "@radix-ui/themes";
 
 const robotoMono = Roboto_Mono({
   subsets: ["latin"],
@@ -25,34 +25,40 @@ const NavBar = () => {
 
   return (
     <nav
-      className={`${robotoMono.variable} font-mono flex  mb-5 h-14 items-center space-x-6 px-5 border-b`}
+      className={`${robotoMono.variable} font-mono  mb-5 px-5 py-3 border-b`}
     >
-      <Link href="/">
-        <FaBug />
-      </Link>
-      <ul className="flex space-x-6">
-        {links.map((link) => (
-          <li
-            className={classNames({
-              "text-zinc-100": currentPath === link.href,
-              "text-zinc-500": currentPath !== link.href,
-              "hover:text-white transition-colors": true,
-              "font-bold": true,
-            })}
-            key={link.href}
-          >
-            <Link href={link.href}>{link.label}</Link>
-          </li>
-        ))}
-      </ul>
-      <Box>
-        {status === "authenticated" && (
-          <Link href="/api/auth/signout">signout</Link>
-        )}
-        {status === "unauthenticated" && (
-          <Link href="/api/auth/signin">signin</Link>
-        )}
-      </Box>
+      <Container>
+        <Flex justify="between">
+          <Flex align="center" gap="3">
+            <Link href="/">
+              <FaBug />
+            </Link>
+            <ul className="flex space-x-6">
+              {links.map((link) => (
+                <li
+                  className={classNames({
+                    "text-zinc-100": currentPath === link.href,
+                    "text-zinc-500": currentPath !== link.href,
+                    "hover:text-white transition-colors": true,
+                    "font-bold": true,
+                  })}
+                  key={link.href}
+                >
+                  <Link href={link.href}>{link.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </Flex>
+          <Box>
+            {status === "authenticated" && (
+              <Link href="/api/auth/signout">signout</Link>
+            )}
+            {status === "unauthenticated" && (
+              <Link href="/api/auth/signin">signin</Link>
+            )}
+          </Box>
+        </Flex>
+      </Container>
     </nav>
   );
 };
