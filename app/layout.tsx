@@ -6,6 +6,7 @@ import "./globals.css";
 import NavBar from "./NavBar";
 import "./theme-config.css";
 import { SessionProvider } from "next-auth/react";
+import QueryClientProvider from "./QueryClientProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,19 +28,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
+  return (˝
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessionProvider>
-          <Theme appearance="dark" accentColor="violet" radius="large">
-            <NavBar />
-            <main className="p-5">
-              <Container>{children}</Container>
-            </main>
-          </Theme>
-        </SessionProvider>
+        <QueryClientProvider>
+          <SessionProvider>
+            <Theme appearance="dark" accentColor="violet" radius="large">
+              <NavBar />
+              <main className="p-5">
+                <Container>{children}</Container>
+              </main>
+            </Theme>
+          </SessionProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
