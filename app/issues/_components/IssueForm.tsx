@@ -19,8 +19,6 @@ import { Controller, useForm } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
 import { z } from "zod";
 
-
-
 type IssueFormData = z.infer<typeof issueSchema>;
 
 const statusOptions = ["OPEN", "IN_PROGRESS", "CLOSED"];
@@ -46,7 +44,9 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     } catch (error) {
       setSubmitting(false);
       if (axios.isAxiosError(error)) {
-        setError(error.response?.data?.message || "An unexpected error occurred.");
+        setError(
+          error.response?.data?.message || "An unexpected error occurred."
+        );
       } else {
         setError("An unexpected error occurred.");
       }
