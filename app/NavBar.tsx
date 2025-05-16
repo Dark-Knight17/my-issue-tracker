@@ -18,7 +18,7 @@ const NavBar = () => {
   return (
     <nav className={`mb-5 px-5 py-3 border-b`}>
       <Flex justify="between">
-        <Flex align="center" gap="3">
+        <Flex align="center" gap="8">
           <Link href="/">
             <FaBug />
           </Link>
