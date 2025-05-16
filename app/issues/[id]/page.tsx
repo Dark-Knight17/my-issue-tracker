@@ -7,8 +7,12 @@ import DeleteIssueBUtton from "./DeleteIssueBUtton";
 import { isSymbolObject } from "util/types";
 import AssigneeSelect from "./AssigneeSelect";
 import { auth } from "@/auth";
+import { Description } from "@radix-ui/themes/components/alert-dialog";
 
-const IssueDetailPage = async (props: { params: Promise<{ id: string }> }) => {
+interface Props {
+  params: Promise<{ id: string }>;
+}
+const IssueDetailPage = async (props: Props) => {
   const session = await auth();
   const params = await props.params;
   const issue = await prisma.issue.findUnique({
@@ -42,5 +46,18 @@ const IssueDetailPage = async (props: { params: Promise<{ id: string }> }) => {
     </Grid>
   );
 };
+
+export async function generateMetadata(prop: Props) {
+  const params = await prop.params;
+  const issue = await prisma.issue.findUnique({
+    where: {
+      id: parseInt(params.id),
+    },
+  });
+  return {
+    title: issue?.title,
+    description: "Details of issue" + issue?.id,
+  };
+}
 
 export default IssueDetailPage;
