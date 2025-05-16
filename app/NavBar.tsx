@@ -17,17 +17,15 @@ import { Skeleton, SkeletonTheme } from "./components";
 const NavBar = () => {
   return (
     <nav className={`mb-5 px-5 py-3 border-b`}>
-      <Container>
-        <Flex justify="between">
-          <Flex align="center" gap="3">
-            <Link href="/">
-              <FaBug />
-            </Link>
-            <NavLinks />
-          </Flex>
-          <AuthStatus />
+      <Flex justify="between">
+        <Flex align="center" gap="3">
+          <Link href="/">
+            <FaBug />
+          </Link>
+          <NavLinks />
         </Flex>
-      </Container>
+        <AuthStatus />
+      </Flex>
     </nav>
   );
 };
