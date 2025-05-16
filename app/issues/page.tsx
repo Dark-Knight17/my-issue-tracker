@@ -1,14 +1,15 @@
-import { prisma } from "@/prisma/client";
-import { Table } from "@radix-ui/themes";
 import { IssueStatusBadge, Link } from "@/app/components";
-import IssueActions from "./IssueActions";
+import { prisma } from "@/prisma/client";
 import { Issue, Status } from "@prisma/client";
-import NextLink from "next/link";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
+import { Table } from "@radix-ui/themes";
+import NextLink from "next/link";
+import IssueActions from "./IssueActions";
 
-const IssuesPage = async (props: {
+interface Props {
   searchParams: Promise<{ status: Status; orderBy: keyof Issue }>;
-}) => {
+}
+const IssuesPage = async (props: Props) => {
   const columns: {
     label: string;
     value: keyof Issue;
@@ -30,14 +31,24 @@ const IssuesPage = async (props: {
     },
   ];
   const searchParams = await props.searchParams;
+
   const statuses = Object.values(Status);
+
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
     : undefined;
+
+  const orderBy = columns
+    .map((column) => column.value)
+    .includes(searchParams.orderBy)
+    ? { [searchParams.orderBy]: "asc" }
+    : undefined;
+
   const issues = await prisma.issue.findMany({
     where: {
       status: status,
     },
+    orderBy,
   });
   return (
     <div>
