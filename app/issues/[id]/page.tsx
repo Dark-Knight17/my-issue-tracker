@@ -6,8 +6,10 @@ import IssueDetails from "./IssueDetails";
 import DeleteIssueBUtton from "./DeleteIssueBUtton";
 import { isSymbolObject } from "util/types";
 import AssigneeSelect from "./AssigneeSelect";
+import { auth } from "@/auth";
 
 const IssueDetailPage = async (props: { params: Promise<{ id: string }> }) => {
+  const session = await auth();
   const params = await props.params;
   const issue = await prisma.issue.findUnique({
     where: {
@@ -28,13 +30,15 @@ const IssueDetailPage = async (props: { params: Promise<{ id: string }> }) => {
       <Box className="md:col-span-4">
         <IssueDetails issue={issue} />
       </Box>
-      <Box>
-        <Flex direction="column" gap="4">
-          <AssigneeSelect />
-          <EditIssueButton issueId={issue.id} />
-          <DeleteIssueBUtton issueId={issue.id} />
-        </Flex>
-      </Box>
+      {session && (
+        <Box>
+          <Flex direction="column" gap="4">
+            <AssigneeSelect />
+            <EditIssueButton issueId={issue.id} />
+            <DeleteIssueBUtton issueId={issue.id} />
+          </Flex>
+        </Box>
+      )}
     </Grid>
   );
 };
