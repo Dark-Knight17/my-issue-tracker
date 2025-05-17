@@ -1,14 +1,12 @@
+import { auth } from "@/auth";
 import { prisma } from "@/prisma/client";
 import { Box, Container, Flex, Grid } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
+import { cache } from "react";
+import AssigneeSelect from "./AssigneeSelect";
+import DeleteIssueBUtton from "./DeleteIssueBUtton";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
-import DeleteIssueBUtton from "./DeleteIssueBUtton";
-import { isSymbolObject } from "util/types";
-import AssigneeSelect from "./AssigneeSelect";
-import { auth } from "@/auth";
-import { Description } from "@radix-ui/themes/components/alert-dialog";
-import { cache } from "react";
 
 interface Props {
   params: Promise<{ id: string }>;
