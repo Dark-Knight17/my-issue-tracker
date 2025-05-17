@@ -1,10 +1,10 @@
 import { prisma } from "@/prisma/client";
 import { Status } from "@prisma/client";
+import { Flex } from "@radix-ui/themes";
+import { Metadata } from "next";
 import Pagination from "../components/Pagination";
 import IssueActions from "./IssueActions";
 import IssueTable, { columnNames, IssueQuery } from "./IssueTable";
-import { Flex } from "@radix-ui/themes";
-import { Metadata } from "next";
 
 interface Props {
   searchParams: Promise<IssueQuery>;
@@ -20,8 +20,13 @@ const IssuesPage = async (props: Props) => {
 
   const where = { status };
 
+  const validSorts = ["asc", "desc"] as const;
+  const sort = validSorts.includes(searchParams.sort)
+    ? searchParams.sort
+    : "asc";
+
   const orderBy = columnNames.includes(searchParams.orderBy)
-    ? { [searchParams.orderBy]: "asc" }
+    ? { [searchParams.orderBy]: sort }
     : undefined;
 
   const page = parseInt(searchParams.page) || 1;
@@ -39,6 +44,7 @@ const IssuesPage = async (props: Props) => {
     <Flex direction="column" gap="5">
       <IssueActions />
       <IssueTable searchParams={searchParams} issues={issues} />
+
       <Pagination
         pageSize={pageSize}
         currentPage={page}
@@ -51,7 +57,7 @@ const IssuesPage = async (props: Props) => {
 export const dynamic = "force-dynamic";
 export default IssuesPage;
 
-export const metadata:Metadata = {
-  title: 'Issue Tracker -Issue List',
-  description: 'View all project issues'
-}
+export const metadata: Metadata = {
+  title: "Issue Tracker -Issue List",
+  description: "View all project issues",
+};

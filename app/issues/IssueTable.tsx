@@ -1,17 +1,18 @@
 import { Issue, Status } from "@prisma/client";
-import { ArrowUpIcon } from "@radix-ui/react-icons";
+import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import { Table } from "@radix-ui/themes";
-import  NextLink  from "next/link";
+import NextLink from "next/link";
 import { IssueStatusBadge, Link } from "../components";
 
 export interface IssueQuery {
   status: Status;
   orderBy: keyof Issue;
+  sort: "asc" | "desc";
   page: string;
 }
 
 interface Props {
-  searchParams: IssueQuery
+  searchParams: IssueQuery;
   issues: Issue[];
 }
 
@@ -30,14 +31,27 @@ const IssueTable = async ({ searchParams, issues }: Props) => {
                   query: {
                     ...searchParams,
                     orderBy: column.value,
+                    sort:
+                      searchParams.orderBy === column.value &&
+                      searchParams.sort === "asc"
+                        ? "desc"
+                        : "asc",
                   },
                 }}
+                className={
+                  column.value === searchParams.orderBy ?
+                  "text-red-900 font-semibold" : undefined
+                }
               >
                 {column.label}
               </NextLink>
-              {column.value === searchParams.orderBy && (
-                <ArrowUpIcon className="inline" />
-              )}
+
+              {column.value === searchParams.orderBy &&
+                (searchParams.sort === "asc" ? (
+                  <ArrowUpIcon className="inline text-red-900 " />
+                ) : (
+                  <ArrowDownIcon className="inline text-red-900 " />
+                ))}
             </Table.ColumnHeaderCell>
           ))}
         </Table.Row>
@@ -84,5 +98,6 @@ const columns: {
     className: "hidden md:table-cell",
   },
 ];
+
 export const columnNames = columns.map((column) => column.value);
 export default IssueTable;
