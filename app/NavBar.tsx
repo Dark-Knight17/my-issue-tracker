@@ -2,10 +2,8 @@
 import {
   Avatar,
   Box,
-  Button,
-  Container,
   DropdownMenu,
-  Flex,
+  Flex
 } from "@radix-ui/themes";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
