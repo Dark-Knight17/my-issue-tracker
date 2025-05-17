@@ -9,6 +9,7 @@ export interface IssueQuery {
   orderBy: keyof Issue;
   sort: "asc" | "desc";
   page: string;
+  pageSize: string;
 }
 
 interface Props {
@@ -39,8 +40,9 @@ const IssueTable = async ({ searchParams, issues }: Props) => {
                   },
                 }}
                 className={
-                  column.value === searchParams.orderBy ?
-                  "text-red-900 font-semibold" : undefined
+                  column.value === searchParams.orderBy
+                    ? "text-red-900 font-semibold"
+                    : undefined
                 }
               >
                 {column.label}
