@@ -5,6 +5,8 @@ import IssueChart from "./IssueChart";
 import IssueSummary from "./IssueSummary";
 import LastestIssues from "./LastestIssues";
 
+export const fetchCache = 'force-no-store';
+
 export default async function Home() {
   const open = await prisma.issue.count({
     where: { status: "OPEN" },
