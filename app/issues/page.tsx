@@ -18,7 +18,11 @@ const IssuesPage = async (props: Props) => {
     ? searchParams.status
     : undefined;
 
-  const where = { status };
+  const assigneeParam = searchParams.assignee;
+  const assignedToUserId =
+    assigneeParam === "unassigned" ? null : assigneeParam || undefined;
+
+  const where = { status, assignedToUserId };
 
   const validSorts = ["asc", "desc"] as const;
   const sort = validSorts.includes(searchParams.sort)

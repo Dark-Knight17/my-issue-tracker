@@ -79,7 +79,7 @@ const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
           <DropdownMenu.Item onClick={() => onSelect(15)}>15</DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      <Text size="2">{searchParams.get("pageSize")} per page</Text>
+      <Text size="2">{pageSize} per page</Text>
     </Flex>
   );
 };
