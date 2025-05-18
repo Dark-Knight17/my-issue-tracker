@@ -9,12 +9,13 @@ const IssueAssigneeFilter = () => {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  if (isLoading)
+  if (isLoading){
     return (
       <SkeletonTheme>
         <Skeleton />
       </SkeletonTheme>
     );
+  }
   if (error) return null;
 
   return (
@@ -26,7 +27,7 @@ const IssueAssigneeFilter = () => {
         const query = "?" + params.toString();
         router.push(query);
       }}
-      defaultValue={searchParams.get("assignee") || "all"}
+      // defaultValue={searchParams.get("assignee") || "all"}
     >
       <Select.Trigger placeholder="Filter by Assignee..." />
       <Select.Content>

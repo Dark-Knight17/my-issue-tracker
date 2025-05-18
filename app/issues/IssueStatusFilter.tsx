@@ -30,7 +30,7 @@ const IssueStatusFilter = () => {
         const query = params.size ? "?" + params.toString() : "";
         router.push(`/issues/${query}`);
       }}
-      defaultValue={searchParams.get("status") || "all"}
+      // defaultValue={searchParams.get("status") || "all"}
     >
       <Select.Trigger placeholder="Filter by status..." />
       <Select.Content>
