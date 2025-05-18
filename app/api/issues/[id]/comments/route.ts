@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   if (!session) return NextResponse.json({}, { status: 401 });
 
   const body = await request.json();
-  
+
   const validation = commentSchema.safeParse(body);
 
   if (!validation.success)
@@ -19,4 +19,20 @@ export async function POST(request: NextRequest) {
   });
 
   return NextResponse.json(newComment, { status: 201 });
+}
+
+export async function GET(
+  request: NextRequest,
+  props: { params: Promise<{ id: string }> }
+) {
+  const params = await props.params;
+  const comments = await prisma.comment.findMany({
+    where: {
+      issueId: parseInt(params.id),
+    },
+    include: {
+      author: true,
+    },
+  });
+  return NextResponse.json(comments);
 }

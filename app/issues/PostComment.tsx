@@ -3,13 +3,13 @@ import { Box, Button, Card, Spinner, TextArea } from "@radix-ui/themes";
 import axios from "axios";
 import { useState } from "react";
 
-const PostComment = ({
-  issueId,
-  authorId,
-}: {
+interface Props {
   issueId: number;
   authorId: string;
-}) => {
+  onSuccess(): void;
+}
+
+const PostComment = ({ issueId, authorId, onSuccess }: Props) => {
   const [comment, setComment] = useState("");
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState("");
@@ -29,6 +29,7 @@ const PostComment = ({
       };
       await axios.post(`/api/issues/${issueId}/comments`, body);
       setComment(""); // Clear input on success
+      onSuccess?.();
     } catch (err: any) {
       setError(err?.response?.data?.message || "Something went wrong.");
     } finally {

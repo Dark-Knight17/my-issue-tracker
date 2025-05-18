@@ -1,35 +1,63 @@
-import { prisma } from "@/prisma/client";
-import { Issue } from "@prisma/client";
-import { Card, Flex, Heading, TextArea } from "@radix-ui/themes";
+"use client";
+import { Card, Flex, Heading } from "@radix-ui/themes";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { Skeleton, SkeletonTheme } from "../_components";
 import CommentCard from "./CommentCard";
 import PostComment from "./PostComment";
-import { auth } from "@/auth";
-import { useQuery } from "@tanstack/react-query";
 
+interface CommentWithAuthor {
+  id: string;
+  comment: string;
+  createdAt: Date;
+  author: {
+    id: string;
+    name?: string;
+    email?: string;
+    image?: string;
+  };
+}
 
-const Comments = async ({ issue }: { issue: Issue }) => {
-  const session = await auth();
-  const comments = await prisma.comment.findMany({
-    where: {
-      issueId: issue.id,
-    },
-    include: {
-      author: true,
-    },
+interface Props {
+  issueId: number;
+  authorId: string;
+}
+
+const fetchComments = async (issueId: number) => {
+  const res = await axios.get<CommentWithAuthor[]>(
+    `/api/issues/${issueId}/comments`
+  );
+  return res.data;
+};
+
+const Comments = ({ issueId, authorId }: Props) => {
+  const {
+    data: comments,
+    error,
+    isLoading,
+    refetch,
+  } = useQuery<CommentWithAuthor[]>({
+    queryKey: ["comments"],
+    queryFn: () => fetchComments(issueId),
+    refetchInterval: 5000, // optional polling every 5s
   });
 
-  const author = await prisma.user.findUnique({
-    where: {
-      email: session?.user?.email!,
-    },
-  });
+  if (isLoading) {
+    return (
+      <SkeletonTheme>
+        <Skeleton />
+      </SkeletonTheme>
+    );
+  }
+
+  if (error) return null;
 
   return (
     <Flex direction="column" gap="2">
       <Card>
         <Heading>Comments</Heading>
         <Flex direction="column" gap="3" mt="3">
-          {comments.map((comment) => (
+          {comments?.map((comment) => (
             <CommentCard
               key={comment.id}
               comment={comment.comment}
@@ -38,7 +66,7 @@ const Comments = async ({ issue }: { issue: Issue }) => {
           ))}
         </Flex>
       </Card>
-      <PostComment issueId={issue.id} authorId={author?.id!} />
+      <PostComment issueId={issueId} authorId={authorId} onSuccess={refetch} />
     </Flex>
   );
 };

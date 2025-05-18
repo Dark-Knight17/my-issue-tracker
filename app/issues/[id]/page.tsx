@@ -35,6 +35,12 @@ const IssueDetailPage = async (props: Props) => {
 
   if (!issue) notFound();
 
+  const currentUser = await prisma.user.findUnique({
+    where: {
+      email: session?.user?.email!,
+    },
+  });
+
   return (
     <Container>
       <Grid
@@ -47,7 +53,7 @@ const IssueDetailPage = async (props: Props) => {
         <Box className="md:col-span-4">
           <IssueDetails issue={issue} />
           <Box mt="5">
-            <Comments issue={issue} />
+            <Comments issueId={issue.id} authorId={currentUser?.id!} />
           </Box>
         </Box>
         {session && (
