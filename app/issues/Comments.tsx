@@ -62,6 +62,7 @@ const Comments = ({ issueId, authorId }: Props) => {
               key={comment.id}
               comment={comment.comment}
               authorName={comment.author.name!}
+              createdAt={comment.createdAt}
             />
           ))}
         </Flex>
