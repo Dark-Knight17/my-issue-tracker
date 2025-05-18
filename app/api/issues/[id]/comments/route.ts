@@ -19,3 +19,5 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json(newComment, { status: 201 });
 }
+
+

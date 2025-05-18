@@ -1,18 +1,27 @@
 import { auth } from "@/auth";
 import { prisma } from "@/prisma/client";
-import { Box, Container, Flex, Grid } from "@radix-ui/themes";
+import {
+  Avatar,
+  Box,
+  Card,
+  Container,
+  Flex,
+  Grid,
+  Text,
+} from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 import AssigneeSelect from "./AssigneeSelect";
 import DeleteIssueBUtton from "./DeleteIssueBUtton";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
+import Comments from "../Comments";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
-const fetchUser = cache((issueId: number) =>
+const fetchIssue = cache((issueId: number) =>
   prisma.issue.findUnique({
     where: {
       id: issueId,
@@ -22,7 +31,7 @@ const fetchUser = cache((issueId: number) =>
 const IssueDetailPage = async (props: Props) => {
   const session = await auth();
   const params = await props.params;
-  const issue = await fetchUser(parseInt(params.id));
+  const issue = await fetchIssue(parseInt(params.id));
 
   if (!issue) notFound();
 
@@ -37,6 +46,9 @@ const IssueDetailPage = async (props: Props) => {
       >
         <Box className="md:col-span-4">
           <IssueDetails issue={issue} />
+          <Box mt="5">
+            <Comments issue={issue} />
+          </Box>
         </Box>
         {session && (
           <Box>
@@ -54,7 +66,7 @@ const IssueDetailPage = async (props: Props) => {
 
 export async function generateMetadata(prop: Props) {
   const params = await prop.params;
-  const issue = await fetchUser(parseInt(params.id));
+  const issue = await fetchIssue(parseInt(params.id));
   return {
     title: issue?.title,
     description: "Details of issue" + issue?.id,

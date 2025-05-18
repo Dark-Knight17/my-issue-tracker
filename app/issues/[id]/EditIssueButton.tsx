@@ -1,8 +1,8 @@
-import { Button } from "@/app/components";
+import { Button } from "@/app/_components";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
-const EditIssueButton = ({issueId} : {issueId:number}) => {
+const EditIssueButton = ({ issueId }: { issueId: number }) => {
   return (
     <Button>
       <Pencil1Icon />

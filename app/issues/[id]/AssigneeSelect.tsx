@@ -1,5 +1,5 @@
 "use client";
-import { Skeleton, SkeletonTheme } from "@/app/components";
+import { Skeleton, SkeletonTheme } from "@/app/_components";
 import { Issue } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import axios from "axios";
@@ -55,7 +55,5 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     </>
   );
 };
-
-
 
 export default AssigneeSelect;
