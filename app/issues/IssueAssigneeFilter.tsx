@@ -36,11 +36,13 @@ const IssueAssigneeFilter = () => {
         <Select.Item key={2} value="unassigned">
           Unassigned
         </Select.Item>
-        {users?.map((user) => (
-          <Select.Item key={user.id} value={user.id!}>
-            {user.name}
-          </Select.Item>
-        ))}
+        <Select.Separator />
+        <Select.Group>
+          <Select.Label>Assignee</Select.Label>
+          {users?.map((user) => (
+            <Select.Item value={user.id!}>{user.name}</Select.Item>
+          ))}
+        </Select.Group>
       </Select.Content>
     </Select.Root>
   );
