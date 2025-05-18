@@ -1,11 +1,14 @@
 import { prisma } from "@/prisma/client";
 import { Issue } from "@prisma/client";
-import { DividerHorizontalIcon } from "@radix-ui/react-icons";
-import { Flex, Box, Separator, Text, Card, Heading } from "@radix-ui/themes";
-import { useQuery } from "@tanstack/react-query";
+import { Card, Flex, Heading, TextArea } from "@radix-ui/themes";
 import CommentCard from "./CommentCard";
+import PostComment from "./PostComment";
+import { auth } from "@/auth";
+import { useQuery } from "@tanstack/react-query";
+
 
 const Comments = async ({ issue }: { issue: Issue }) => {
+  const session = await auth();
   const comments = await prisma.comment.findMany({
     where: {
       issueId: issue.id,
@@ -14,18 +17,29 @@ const Comments = async ({ issue }: { issue: Issue }) => {
       author: true,
     },
   });
+
+  const author = await prisma.user.findUnique({
+    where: {
+      email: session?.user?.email!,
+    },
+  });
+
   return (
-    <Card>
-      <Heading>Comments</Heading>
-      <Flex direction="column" gap="3" mt="3">
-        {comments.map((comment) => (
-          <CommentCard
-            comment={comment.comment}
-            authorName={comment.author.name!}
-          />
-        ))}
-      </Flex>
-    </Card>
+    <Flex direction="column" gap="2">
+      <Card>
+        <Heading>Comments</Heading>
+        <Flex direction="column" gap="3" mt="3">
+          {comments.map((comment) => (
+            <CommentCard
+              key={comment.id}
+              comment={comment.comment}
+              authorName={comment.author.name!}
+            />
+          ))}
+        </Flex>
+      </Card>
+      <PostComment issueId={issue.id} authorId={author?.id!} />
+    </Flex>
   );
 };
 
