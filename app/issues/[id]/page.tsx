@@ -1,21 +1,13 @@
 import { auth } from "@/auth";
 import { prisma } from "@/prisma/client";
-import {
-  Avatar,
-  Box,
-  Card,
-  Container,
-  Flex,
-  Grid,
-  Text,
-} from "@radix-ui/themes";
+import { Box, Container, Flex, Grid } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import { cache } from "react";
+import Comments from "../Comments";
 import AssigneeSelect from "./AssigneeSelect";
 import DeleteIssueBUtton from "./DeleteIssueBUtton";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
-import Comments from "../Comments";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -35,12 +27,14 @@ const IssueDetailPage = async (props: Props) => {
 
   if (!issue) notFound();
 
+  const email = session?.user?.email ? session.user.email : undefined;
   const currentUser = await prisma.user.findUnique({
     where: {
-      email: session?.user?.email!,
+      email,
     },
   });
 
+  if (!currentUser) notFound();
   return (
     <Container>
       <Grid
@@ -53,7 +47,7 @@ const IssueDetailPage = async (props: Props) => {
         <Box className="md:col-span-4">
           <IssueDetails issue={issue} />
           <Box mt="5">
-            <Comments issueId={issue.id} authorId={currentUser?.id!} />
+            <Comments issueId={issue.id} authorId={currentUser.id} />
           </Box>
         </Box>
         {session && (

@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, Card, Spinner, TextArea } from "@radix-ui/themes";
+import { Button, Card, Spinner, TextArea, Text } from "@radix-ui/themes";
 import axios from "axios";
 import { useState } from "react";
 
@@ -30,8 +30,8 @@ const PostComment = ({ issueId, authorId, onSuccess }: Props) => {
       await axios.post(`/api/issues/${issueId}/comments`, body);
       setComment(""); // Clear input on success
       onSuccess?.();
-    } catch (err: any) {
-      setError(err?.response?.data?.message || "Something went wrong.");
+    } catch {
+      setError("Something went wrong.");
     } finally {
       setPosting(false);
     }
@@ -47,6 +47,11 @@ const PostComment = ({ issueId, authorId, onSuccess }: Props) => {
       <Button mt="2" onClick={postComment} disabled={posting}>
         Post {posting && <Spinner />}
       </Button>
+      {error && (
+        <Text color="red" mt="2">
+          {error}
+        </Text>
+      )}
     </Card>
   );
 };

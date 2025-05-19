@@ -1,8 +1,7 @@
 import { Select } from "@radix-ui/themes";
-import React, { useState } from "react";
-import { useUsers } from "./_hooks/useUsers";
-import { Skeleton, SkeletonTheme } from "../_components";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Skeleton, SkeletonTheme } from "../_components";
+import { useUsers } from "./_hooks/useUsers";
 
 const IssueAssigneeFilter = () => {
   const { data: users, error, isLoading } = useUsers();

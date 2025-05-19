@@ -1,6 +1,5 @@
 import { DividerHorizontalIcon } from "@radix-ui/react-icons";
 import { Box, Card, Flex, Text } from "@radix-ui/themes";
-import { formatDistanceToNow } from "date-fns";
 import { format } from "date-fns";
 
 interface Props {
