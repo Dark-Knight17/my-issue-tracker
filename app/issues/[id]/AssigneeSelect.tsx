@@ -12,17 +12,15 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
   const { data: users, error, isLoading } = useUsers();
 
   const assignIssue = (userId: string) => {
-    if (userId !== "unassinged") {
-      axios
-        .patch(`/api/issues/${issue.id}`, {
-          assignedToUserId: userId,
-          status: "IN_PROGRESS",
-        })
-        .then(() => router.refresh())
-        .catch(() => {
-          toast.error("Changes could not be saved");
-        });
-    }
+    axios
+      .patch(`/api/issues/${issue.id}`, {
+        assignedToUserId: userId === "unassigned" ? null : userId,
+        status: userId === "unassigned" ? issue.status : "IN_PROGRESS",
+      })
+      .then(() => router.refresh())
+      .catch(() => {
+        toast.error("Changes could not be saved");
+      });
   };
 
   if (isLoading)
