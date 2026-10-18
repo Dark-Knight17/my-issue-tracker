@@ -34,6 +34,11 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     formState: { errors },
   } = useForm<IssueFormData>({
     resolver: zodResolver(issueSchema),
+    defaultValues: {
+      title: issue?.title || "",
+      description: issue?.description || "",
+      status: issue?.status || "OPEN",
+    },
   });
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -41,6 +46,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       if (issue) await axios.patch(`/api/issues/${issue.id}`, data);
       else await axios.post("/api/issues", data);
       router.push("/issues");
+      router.refresh();
     } catch (error) {
       setSubmitting(false);
       if (axios.isAxiosError(error)) {
@@ -87,7 +93,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
                 <DropdownMenu.Root>
                   <DropdownMenu.Trigger>
                     <Button variant="soft">
-                      status
+                      {field.value || "status"}
                       <DropdownMenu.TriggerIcon />
                     </Button>
                   </DropdownMenu.Trigger>
