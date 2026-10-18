@@ -1,3 +1,4 @@
+"use client";
 import { Select } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Skeleton, SkeletonTheme } from "../_components";
@@ -23,10 +24,11 @@ const IssueAssigneeFilter = () => {
         const params = new URLSearchParams(searchParams);
         if (assignee === "all") params.delete("assignee");
         else params.set("assignee", assignee);
-        const query = "?" + params.toString();
-        router.push(query);
+        params.delete("page");
+        const query = params.size ? "?" + params.toString() : "";
+        router.push(`/issues${query}`);
       }}
-      // defaultValue={searchParams.get("assignee") || "all"}
+      defaultValue={searchParams.get("assignee") || "all"}
     >
       <Select.Trigger placeholder="Filter by Assignee..." />
       <Select.Content>

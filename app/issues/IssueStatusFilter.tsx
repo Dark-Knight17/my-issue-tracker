@@ -26,11 +26,12 @@ const IssueStatusFilter = () => {
         else params.set("status", status);
 
         if (currentOrderBy) params.set("orderBy", currentOrderBy);
+        params.delete("page");
 
         const query = params.size ? "?" + params.toString() : "";
-        router.push(`/issues/${query}`);
+        router.push(`/issues${query}`);
       }}
-      // defaultValue={searchParams.get("status") || "all"}
+      defaultValue={searchParams.get("status") || "all"}
     >
       <Select.Trigger placeholder="Filter by status..." />
       <Select.Content>
