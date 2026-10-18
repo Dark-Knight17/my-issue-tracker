@@ -15,7 +15,6 @@ const PostComment = ({ issueId, authorId, onSuccess }: Props) => {
   const [error, setError] = useState("");
 
   const postComment = async () => {
-    setPosting(true);
     if (!comment.trim()) return;
 
     setPosting(true);
