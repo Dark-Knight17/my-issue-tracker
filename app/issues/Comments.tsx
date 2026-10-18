@@ -20,7 +20,7 @@ interface CommentWithAuthor {
 
 interface Props {
   issueId: number;
-  authorId: string;
+  authorId?: string;
 }
 
 const fetchComments = async (issueId: number) => {
@@ -37,7 +37,7 @@ const Comments = ({ issueId, authorId }: Props) => {
     isLoading,
     refetch,
   } = useQuery<CommentWithAuthor[]>({
-    queryKey: ["comments"],
+    queryKey: ["comments", issueId],
     queryFn: () => fetchComments(issueId),
     refetchInterval: 5000, // optional polling every 5s
   });
@@ -67,7 +67,9 @@ const Comments = ({ issueId, authorId }: Props) => {
           ))}
         </Flex>
       </Card>
-      <PostComment issueId={issueId} authorId={authorId} onSuccess={refetch} />
+      {authorId && (
+        <PostComment issueId={issueId} authorId={authorId} onSuccess={refetch} />
+      )}
     </Flex>
   );
 };
